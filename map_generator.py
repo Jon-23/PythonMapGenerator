@@ -15,18 +15,25 @@ class MapGenerator:
     fichier = None
     Boucle_numero = 1
 
-
     def mise_a_jour_interface(self):
+        self.interface_map = self.map_char_to_sprite(self.donnee_map)
+
+    
         
-    def add_spawn(self,x,y):
+    def add_item(self,x,y,type_p):
         if x < 0 and y <0:
             raise ValueError(f' x et y doivent être superieur à 0 x:{x} y:{y}')
         elif x > len(self.donnee_map[0])-1 or y > len(self.donnee_map)-1:
             raise ValueError(f' x et y doivent être inferieur à (x:{len(self.donnee_map[0])} ou y:{len(self.donnee_map)}) données saisie : x:{x} y:{y}')
         elif self.donnee_map[y][x]['value'] == 1:
-            raise ValueError(f' La position contient un mur')
+            return 'La position contient un mur'
+            #raise ValueError(f' La position contient un mur')
         elif self.donnee_map[y][x]['value'] == 0:
-            self.donnee_map[y][x]['value'] = sprites.Items['spawn']
+            self.donnee_map[y][x]['value'] = sprites.Items[type_p]
+        else:
+            return f"Deja un item {self.donnee_map[y][x]['value']}"
+        self.mise_a_jour_interface()
+        
         
         
 
