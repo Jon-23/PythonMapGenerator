@@ -2,9 +2,10 @@ import Sprites.sprites as sprites
 from math import floor
 from random import randint,shuffle
 import os
+import modules_pratiques
 
 import sys
-sys.setrecursionlimit(20000)
+sys.setrecursionlimit(10000)
 
 
 class MapGenerator:
@@ -18,7 +19,35 @@ class MapGenerator:
     def mise_a_jour_interface(self):
         self.interface_map = self.map_char_to_sprite(self.donnee_map)
 
+    def _get_specefic_positions(self,element):
+        donnee_retour = []
+        for y in range(len(self.donnee_map)):
+            for x in range(len(self.donnee_map[y])):
+                if self.donnee_map[y][x]['value'] == element:
+                    donnee_retour.append({'x':x,'y':y})
+        return donnee_retour
     
+    def get_available_positions(self):
+        return self._get_specefic_positions(0)
+        
+    
+    def place_les_items(self,items_p=[]):
+        """
+        item_p[x] = {'valeur':'x','position'={'x':0,'y':0}}
+        """
+        for i in range(len(items_p)):
+            element = items_p[i]
+            valeur = element.get('value')
+            if valeur != None:
+                position = element.get('position')
+                if position != None:
+                    self.add_item(position['x'],position['y'],str(valeur))
+                else:
+                    position = {}
+                    
+                    
+                
+        
         
     def add_item(self,x,y,type_p):
         if x < 0 and y <0:
@@ -30,11 +59,10 @@ class MapGenerator:
             #raise ValueError(f' La position contient un mur')
         elif self.donnee_map[y][x]['value'] == 0:
             self.donnee_map[y][x]['value'] = sprites.Items[type_p]
+            self.mise_a_jour_interface()
+            return "Fait"
         else:
             return f"Deja un item {self.donnee_map[y][x]['value']}"
-        self.mise_a_jour_interface()
-        
-        
         
 
     def save(self,fichier=None):
@@ -182,7 +210,6 @@ class MapGenerator:
             affiche += "\n"
         
         return affiche
-            
 #MapGenerator()
 #
 #for i in range(10):
@@ -196,6 +223,9 @@ class MapGenerator:
 
 
 #print(map_char_to_sprite(mapX2) == map_char_to_sprite(mapX))
+
+Chronometre = modules_pratiques.Chrono()
 Generateur = MapGenerator()
 Generateur.genere_une_map(15,15)
 print(Generateur.get_map())
+print(Chronometre.stop())
