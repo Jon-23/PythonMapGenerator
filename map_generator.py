@@ -223,9 +223,3 @@ class MapGenerator:
 
 
 #print(map_char_to_sprite(mapX2) == map_char_to_sprite(mapX))
-
-Chronometre = modules_pratiques.Chrono()
-Generateur = MapGenerator()
-Generateur.genere_une_map(15,15)
-print(Generateur.get_map())
-print(Chronometre.stop())
